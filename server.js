@@ -7,7 +7,7 @@ const connection = mysql.createConnection({
     host: "127.0.0.1", //have to use this cause localhost doesnt run properly on the new mac
     user: "root",
     password: "",
-    database: "New_company_db",
+    database: "New_Company_db",
 });
 
 // connect to the database
