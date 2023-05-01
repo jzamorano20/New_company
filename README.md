@@ -29,3 +29,24 @@ THEN I am prompted to enter the employee’s first name, last name, role, and ma
 WHEN I choose to update an employee role
 THEN I am prompted to select an employee to update and their new role and this information is updated in the database 
 ```
+## Getting Started
+
+You will first need to do NPM init -y to get started with downlaoding the dependencies. After which you will enter npm i mysql and npm i inquirer but verison 8 so it will load. After which you will go into your package.json and go under scripts to take somethings. Starting with having 'Start': "node server.js" so it will load the inquirer and have the actual prompts appear. But before you can do that you will need to run mySQl and source the schema and then exit and NPM run seed to get the data loaded. After that npm start and begin. Thanks!
+
+## ScreenShots
+
+When you start it up by typing 'npm start'
+![this is it being called in the terminal](./assets/img/new_copmany.png)
+
+
+When you click on  view departments
+![loaded with one of thr options](./assets/img/NC_view.png)
+
+
+When you click the exit!
+![ended the terminal](./assets/img/EXIT_NC.png)
+
+
+## Link to Video Demo
+
+https://drive.google.com/file/d/1At4iU6PtSA0ymQHOqELzlv9VTj49UA5N/view

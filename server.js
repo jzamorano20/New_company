@@ -95,10 +95,10 @@ function viewAllRoles() {
 function viewAllEmployees() {
     const query = `
     SELECT e.id, e.first_name, e.last_name, r.title, d.department_name, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager_name
-    FROM employee e
+    FROM employees e
     LEFT JOIN roles r ON e.role_id = r.id
     LEFT JOIN departments d ON r.department_id = d.id
-    LEFT JOIN employee m ON e.manager_id = m.id;
+    LEFT JOIN employees m ON e.manager_id = m.id;
     `;
     connection.query(query, (err, res) => {
         if (err) throw err;
@@ -150,21 +150,23 @@ function addRole() {
                     name: "department",
                     message: "Select the department for the new role:",
                     choices: res.map(
-                        (department) => department.department_name
+                        (department) => `${department.id}-${department.department_name}`
                     ),
                 },
             ])
             .then((answers) => {
-                const department = res.find(
-                    (department) => department.name === answers.department
-                );
+                // const department = res.find(
+                //     (department) => department.name === answers.department
+                // ); console.log(department)
+                let d_id = answers.department.split('-')[0];
+                console.log(d_id)
                 const query = "INSERT INTO roles SET ?";
                 connection.query(
                     query,
                     {
                         title: answers.title,
                         salary: answers.salary,
-                        department_id: department,
+                        department_id: d_id,
                     },
                     (err, res) => {
                         if (err) throw err;
@@ -195,7 +197,7 @@ function addEmployee() {
 
         // List of employees from db to use as managers
         connection.query(
-            'SELECT id, CONCAT(first_name, " ", last_name) AS name FROM employee',
+            'SELECT id, CONCAT(first_name, " ", last_name) AS name FROM employees',
             (error, results) => {
                 if (error) {
                     console.error(error);
@@ -239,7 +241,7 @@ function addEmployee() {
                     .then((answers) => {
                         // Insert the employee into the database
                         const sql =
-                            "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
+                            "INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
                         const values = [
                             answers.firstName,
                             answers.lastName,
@@ -265,7 +267,7 @@ function addEmployee() {
 }
 function updateEmployeeRole() {
     const queryEmployees =
-        "SELECT employee.id, employee.first_name, employee.last_name, roles.title FROM employee LEFT JOIN roles ON employee.role_id = roles.id";
+        "SELECT employees.id, employees.first_name, employees.last_name, roles.title FROM employees LEFT JOIN roles ON employees.role_id = roles.id";
     const queryRoles = "SELECT * FROM roles";
     connection.query(queryEmployees, (err, resEmployees) => {
         if (err) throw err;
@@ -299,7 +301,7 @@ function updateEmployeeRole() {
                         (role) => role.title === answers.role
                     );
                     const query =
-                        "UPDATE employee SET role_id = ? WHERE id = ?";
+                        "UPDATE employees SET role_id = ? WHERE id = ?";
                     connection.query(
                         query,
                         [role.id, employee.id],
